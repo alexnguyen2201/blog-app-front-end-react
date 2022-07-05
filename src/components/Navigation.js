@@ -2,16 +2,32 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import { LinkContainer } from "react-router-bootstrap";
+import logo from "../images/logo.png";
 
 function Navigation() {
     return (
         <Navbar bg="light" expand="lg">
             <Container>
-                <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+                <LinkContainer to="/">
+                    <Navbar.Brand href="#home">
+                        <img src={logo} style={{ width: 60 }} alt="logo" />
+                    </Navbar.Brand>
+                </LinkContainer>
+
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ms-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
+                        <LinkContainer to="/">
+                            <Nav.Link>Home</Nav.Link>
+                        </LinkContainer>
+
+                        <LinkContainer to="/login">
+                            <Nav.Link className="btn btn-primary text-white">
+                                Login
+                            </Nav.Link>
+                        </LinkContainer>
+
                         <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                             <NavDropdown.Item href="#action/3.1">
                                 Action
