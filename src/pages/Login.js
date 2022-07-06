@@ -3,17 +3,19 @@ import { Col, Container, Row, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./Login.css";
 import axios from "axios";
+import { useLoginUserMutation } from "../services/appApi";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loginUser, { isLoading, data }] = useLoginUserMutation();
 
     function handleLogin(e) {
         e.preventDefault();
-        axios
-            .post("http://localhost:5000/users/login", { email, password })
-            .then(({ data }) => console.log(data))
-            .catch((err) => console.log(err));
+        loginUser({ email, password });
+    }
+    if (data) {
+        console.log(data);
     }
     return (
         <Container>
