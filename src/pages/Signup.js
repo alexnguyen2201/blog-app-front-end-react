@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Col, Container, Row, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./Signup.css";
-import axios from "axios";
 import { useSignupUserMutation } from "../services/appApi";
 
 function Signup() {

@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const appApi = createApi({
     reducerPath: "appApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:5000",
+        baseUrl: "http://localhost:8000/api/v1",
         prepareHeaders: (headers, { getState }) => {
             const token = getState().user.token;
             if (token) {
@@ -24,7 +24,7 @@ export const appApi = createApi({
         }),
         loginUser: builder.mutation({
             query: (user) => ({
-                url: "/users/login",
+                url: "/login/access-token",
                 method: "POST",
                 body: user,
             }),
