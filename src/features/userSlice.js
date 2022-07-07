@@ -10,13 +10,22 @@ export const userSlice = createSlice({
         builder.addMatcher(
             appApi.endpoints.signupUser.matchFulfilled,
             (state, { payload }) => {
-                state.user = payload;
+                state.user = payload.user;
+                state.token = payload.token;
             }
         );
         builder.addMatcher(
             appApi.endpoints.loginUser.matchFulfilled,
             (state, { payload }) => {
-                state.user = payload;
+                state.user = payload.user;
+                state.token = payload.token;
+            }
+        );
+        builder.addMatcher(
+            appApi.endpoints.logoutUser.matchFulfilled,
+            (state) => {
+                delete state.user;
+                delete state.token;
             }
         );
     },

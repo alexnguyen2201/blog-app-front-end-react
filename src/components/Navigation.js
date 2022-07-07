@@ -6,10 +6,19 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { LinkContainer } from "react-router-bootstrap";
 import logo from "../images/logo.png";
+import { Button } from "react-bootstrap";
+import { useLogoutUserMutation } from "../services/appApi";
 
 function Navigation() {
     const { user } = useSelector((state) => state.user);
-
+    const [logoutUser, { isLoading }] = useLogoutUserMutation();
+    function handleLogout() {
+        logoutUser().then(({ error }) => {
+            if (!error) {
+                console.log("logged out!");
+            }
+        });
+    }
     return (
         <Navbar bg="light" expand="lg">
             <Container>
@@ -34,21 +43,29 @@ function Navigation() {
 
                         {user && (
                             <NavDropdown
-                                title="Dropdown"
+                                title={user.email}
                                 id="basic-nav-dropdown"
                             >
-                                <NavDropdown.Item href="#action/3.1">
-                                    Action
-                                </NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">
-                                    Another action
-                                </NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">
-                                    Something
-                                </NavDropdown.Item>
+                                <LinkContainer to="/new-article">
+                                    <NavDropdown.Item>
+                                        New Article
+                                    </NavDropdown.Item>
+                                </LinkContainer>
+
+                                <LinkContainer to="/my-articles">
+                                    <NavDropdown.Item>
+                                        My Articles
+                                    </NavDropdown.Item>
+                                </LinkContainer>
+
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action/3.4">
-                                    Separated link
+                                <NavDropdown.Item>
+                                    <Button
+                                        onClick={handleLogout}
+                                        variant="outline-danger"
+                                    >
+                                        Logout
+                                    </Button>
                                 </NavDropdown.Item>
                             </NavDropdown>
                         )}
