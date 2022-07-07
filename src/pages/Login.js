@@ -2,19 +2,28 @@ import React, { useState } from "react";
 import { Col, Container, Row, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./Login.css";
-import { useLoginUserMutation } from "../services/appApi";
+import {
+    useLoginUserMutation,
+    useGetCurrentUserMutation,
+} from "../services/appApi";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loginUser, { isLoading, data }] = useLoginUserMutation();
+    const [currentUser, { isLoading2, data2 }] = useGetCurrentUserMutation();
 
     function handleLogin(e) {
         e.preventDefault();
-        loginUser({ email, password });
+        var bodyFormData = new FormData();
+        bodyFormData.append("username", email);
+        bodyFormData.append("password", password);
+        loginUser(bodyFormData);
+        currentUser();
     }
     if (data) {
         console.log(data);
+        console.log(data2);
     }
     return (
         <Container>

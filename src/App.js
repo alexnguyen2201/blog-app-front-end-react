@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 
 function App() {
     const { user } = useSelector((state) => state.user);
+
     return (
         <BrowserRouter>
             <Navigation />

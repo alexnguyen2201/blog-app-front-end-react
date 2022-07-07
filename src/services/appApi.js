@@ -36,6 +36,12 @@ export const appApi = createApi({
                 method: "DELETE",
             }),
         }),
+        getCurrentUser: builder.mutation({
+            query: () => ({
+                url: "/users/me",
+                method: "GET",
+            }),
+        }),
     }),
 });
 
@@ -46,5 +52,6 @@ export const {
     useSignupUserMutation,
     useLoginUserMutation,
     useLogoutUserMutation,
+    useGetCurrentUserMutation,
 } = appApi;
 export default appApi;
