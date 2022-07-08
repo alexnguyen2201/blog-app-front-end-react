@@ -36,6 +36,20 @@ export const appApi = createApi({
                 method: "DELETE",
             }),
         }),
+        //post routers
+        createPost: builder.mutation({
+            query: (article) => ({
+                url: "/posts",
+                method: "POST",
+                body: article,
+            }),
+        }),
+
+        getPosts: builder.query({
+            query: () => ({
+                url: "/posts",
+            }),
+        }),
     }),
 });
 
@@ -46,5 +60,8 @@ export const {
     useSignupUserMutation,
     useLoginUserMutation,
     useLogoutUserMutation,
+    useCreatePostMutation,
+    useGetPostsQuery,
 } = appApi;
+
 export default appApi;
