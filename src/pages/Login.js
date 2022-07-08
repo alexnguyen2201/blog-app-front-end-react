@@ -13,13 +13,13 @@ function Login() {
     const [loginUser, { isLoading, data }] = useLoginUserMutation();
     const [currentUser, { isLoading2, data2 }] = useGetCurrentUserMutation();
 
-    function handleLogin(e) {
+    async function handleLogin(e) {
         e.preventDefault();
         var bodyFormData = new FormData();
         bodyFormData.append("username", email);
         bodyFormData.append("password", password);
-        loginUser(bodyFormData);
-        currentUser();
+        await loginUser(bodyFormData);
+        await currentUser();
     }
     if (data) {
         console.log(data);

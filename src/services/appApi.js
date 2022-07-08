@@ -32,8 +32,8 @@ export const appApi = createApi({
 
         logoutUser: builder.mutation({
             query: () => ({
-                url: "/users/logout",
-                method: "DELETE",
+                url: "/logout",
+                method: "POST",
             }),
         }),
         getCurrentUser: builder.mutation({
