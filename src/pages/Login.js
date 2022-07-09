@@ -2,29 +2,35 @@ import React, { useState } from "react";
 import { Col, Container, Row, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./Login.css";
+
 import {
     useLoginUserMutation,
     useGetCurrentUserMutation,
 } from "../services/appApi";
 
+import { useNavigate } from "react-router-dom";
+
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [loginUser, { isLoading, data }] = useLoginUserMutation();
-    const [currentUser, { isLoading2, data2 }] = useGetCurrentUserMutation();
+    const [loginUser, { isLoading, isError, error }] = useLoginUserMutation();
+    const [currentUser] = useGetCurrentUserMutation();
+    const navigate = useNavigate();
 
     async function handleLogin(e) {
         e.preventDefault();
         var bodyFormData = new FormData();
         bodyFormData.append("username", email);
         bodyFormData.append("password", password);
-        await loginUser(bodyFormData);
-        await currentUser();
+        try {
+            await loginUser(bodyFormData);
+            await currentUser();
+            navigate("/");
+        } catch (error) {
+            console.log(error);
+        }
     }
-    if (data) {
-        console.log(data);
-        console.log(data2);
-    }
+
     return (
         <Container>
             <Row>
@@ -34,6 +40,11 @@ function Login() {
                 >
                     <Form className="login__form" onSubmit={handleLogin}>
                         <h1 className="text-center">Login</h1>
+                        {isError && (
+                            <p className="alert alert-danger text-center">
+                                {error.data}
+                            </p>
+                        )}
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Email address</Form.Label>
                             <Form.Control
@@ -60,14 +71,18 @@ function Login() {
                             />
                         </Form.Group>
 
-                        <Button variant="primary" type="submit">
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            disabled={isLoading}
+                        >
                             Login
                         </Button>
                         <div className="py-4">
-                            <p className="text-center">
+                            <span className="text-center">
                                 Don't have an account?{" "}
                                 <Link to="/signup">Sign up</Link>
-                            </p>
+                            </span>
                         </div>
                     </Form>
                 </Col>

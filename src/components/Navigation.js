@@ -11,7 +11,7 @@ import { useLogoutUserMutation } from "../services/appApi";
 
 function Navigation() {
     const { user } = useSelector((state) => state.user);
-    const [logoutUser, { isLoading }] = useLogoutUserMutation();
+    const [logoutUser] = useLogoutUserMutation();
     function handleLogout() {
         logoutUser().then(({ error }) => {
             if (!error) {
@@ -52,7 +52,7 @@ function Navigation() {
                                     </NavDropdown.Item>
                                 </LinkContainer>
 
-                                <LinkContainer to="/my-articles">
+                                <LinkContainer to="/articles/me">
                                     <NavDropdown.Item>
                                         My Articles
                                     </NavDropdown.Item>

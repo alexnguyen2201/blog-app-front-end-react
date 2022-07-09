@@ -24,7 +24,7 @@ function NewArticle() {
         e.preventDefault();
         const rawContentState = convertToRaw(editorState.getCurrentContent());
         const content = draftToHtml(rawContentState);
-        console.log(content);
+
         if (!title || !image || !content) {
             return alert("Title, content and image required");
         }
@@ -50,10 +50,8 @@ function NewArticle() {
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
                 setUploadingimg(false);
                 setUrl(data.url);
-                console.log(data.url);
             })
             .catch((err) => {
                 setUploadingimg(false);
@@ -121,10 +119,10 @@ function NewArticle() {
                         </Form.Select>
                         <div>
                             {!url && (
-                                <p className="alert alert-info">
+                                <div className="alert alert-info">
                                     Please upload an image before publishing
                                     your post
-                                </p>
+                                </div>
                             )}
                         </div>
                         <div className="my-4">
@@ -159,7 +157,7 @@ function NewArticle() {
                             <Spinner animation="border" role="status" />
                             <br />
 
-                            <p className="py-2">Uploading Image</p>
+                            <div className="py-2">Uploading Image</div>
                         </div>
                     )}
                     <div>
@@ -171,6 +169,7 @@ function NewArticle() {
                                     minHeight: "80vh",
                                     objectFit: "cover",
                                 }}
+                                alt="Upload"
                             />
                         )}
                     </div>
@@ -182,6 +181,7 @@ function NewArticle() {
                                 minHeight: "80vh",
                                 objectFit: "cover",
                             }}
+                            alt="cover"
                         />
                     )}
                 </Col>
