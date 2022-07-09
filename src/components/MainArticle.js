@@ -8,13 +8,21 @@ function MainArticle({ article }) {
     return (
         <Row className="pb-4">
             <Col md={6} className="main-article__image-container">
-                <img src={image} />
+                <img
+                    src={image}
+                    alt={title}
+                    style={{
+                        width: "100%",
+                        maxHeight: 350,
+                        objectFit: "cover",
+                    }}
+                />
             </Col>
             <Col md={6}>
                 <h2>{title}</h2>
                 <div
                     dangerouslySetInnerHTML={{
-                        _html: content.substring(0, 200),
+                        __html: content.substring(0, 200),
                     }}
                 />
                 <LinkContainer to={`/articles/${_id}`}>

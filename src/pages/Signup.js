@@ -1,17 +1,22 @@
 import React, { useState } from "react";
 import { Col, Container, Row, Form, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Signup.css";
-import axios from "axios";
 import { useSignupUserMutation } from "../services/appApi";
 
 function Signup() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [signupUser, { isLoading, data }] = useSignupUserMutation();
+    const [signupUser, { data, isLoading, isError, error }] =
+        useSignupUserMutation();
+    const navigate = useNavigate();
     function handleSignup(e) {
         e.preventDefault();
-        signupUser({ email, password });
+        signupUser({ email, password }).then(({ error }) => {
+            if (!error) {
+                navigate("/");
+            }
+        });
     }
     if (data) {
         console.log(data);
@@ -24,7 +29,12 @@ function Signup() {
                     className="d-flex align-items-center justify-content-center"
                 >
                     <Form className="signup__form" onSubmit={handleSignup}>
-                        <h1 className="text-center">Sign Up</h1>
+                        <h1 className="text-center">Create account</h1>
+                        {isError && (
+                            <p className="alert alert-danger text-center">
+                                {error.data}
+                            </p>
+                        )}
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Email address</Form.Label>
                             <Form.Control
@@ -51,14 +61,18 @@ function Signup() {
                             />
                         </Form.Group>
 
-                        <Button variant="primary" type="submit">
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            disabled={isLoading}
+                        >
                             Submit
                         </Button>
                         <div className="py-4">
-                            <p className="text-center">
+                            <span className="text-center">
                                 Already have an account?{" "}
                                 <Link to="/login">Login</Link>
-                            </p>
+                            </span>
                         </div>
                     </Form>
                 </Col>

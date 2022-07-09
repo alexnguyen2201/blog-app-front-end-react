@@ -2,21 +2,24 @@ import React, { useState } from "react";
 import { Col, Container, Row, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./Login.css";
-import axios from "axios";
 import { useLoginUserMutation } from "../services/appApi";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [loginUser, { isLoading, data }] = useLoginUserMutation();
+    const [loginUser, { isLoading, isError, error }] = useLoginUserMutation();
+    const navigate = useNavigate();
 
     function handleLogin(e) {
         e.preventDefault();
-        loginUser({ email, password });
+        loginUser({ email, password }).then(({ error }) => {
+            if (!error) {
+                navigate("/");
+            }
+        });
     }
-    if (data) {
-        console.log(data);
-    }
+
     return (
         <Container>
             <Row>
@@ -26,6 +29,11 @@ function Login() {
                 >
                     <Form className="login__form" onSubmit={handleLogin}>
                         <h1 className="text-center">Login</h1>
+                        {isError && (
+                            <p className="alert alert-danger text-center">
+                                {error.data}
+                            </p>
+                        )}
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Email address</Form.Label>
                             <Form.Control
@@ -52,14 +60,18 @@ function Login() {
                             />
                         </Form.Group>
 
-                        <Button variant="primary" type="submit">
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            disabled={isLoading}
+                        >
                             Login
                         </Button>
                         <div className="py-4">
-                            <p className="text-center">
+                            <span className="text-center">
                                 Don't have an account?{" "}
                                 <Link to="/signup">Sign up</Link>
-                            </p>
+                            </span>
                         </div>
                     </Form>
                 </Col>

@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const appApi = createApi({
     reducerPath: "appApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:5000",
+        baseUrl: "http://localhost:8000",
         prepareHeaders: (headers, { getState }) => {
             const token = getState().user.token;
             if (token) {
@@ -14,6 +14,7 @@ export const appApi = createApi({
             return headers;
         },
     }),
+    tagTypes: ["Post", "User"],
     endpoints: (builder) => ({
         signupUser: builder.mutation({
             query: (user) => ({
@@ -43,12 +44,43 @@ export const appApi = createApi({
                 method: "POST",
                 body: article,
             }),
+            invalidatesTags: ["Post"],
         }),
 
-        getPosts: builder.query({
+        getPost: builder.query({
             query: () => ({
                 url: "/posts",
             }),
+            providesTags: ["Post"],
+        }),
+
+        getOnePost: builder.query({
+            query: (id) => ({
+                url: `/posts/${id}`,
+            }),
+        }),
+        getUserPost: builder.query({
+            query: () => ({
+                url: "/posts/me",
+            }),
+            providesTags: ["Post"],
+        }),
+
+        deletePost: builder.mutation({
+            query: (id) => ({
+                url: `/posts/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Post"],
+        }),
+
+        updatePost: builder.mutation({
+            query: ({ id, ...post }) => ({
+                url: `/posts/${id}`,
+                method: "PATCH",
+                body: post,
+            }),
+            invalidatesTags: ["Post"],
         }),
     }),
 });
@@ -61,7 +93,11 @@ export const {
     useLoginUserMutation,
     useLogoutUserMutation,
     useCreatePostMutation,
-    useGetPostsQuery,
+    useGetPostQuery,
+    useGetOnePostQuery,
+    useGetUserPostQuery,
+    useDeletePostMutation,
+    useUpdatePostMutation,
 } = appApi;
 
 export default appApi;
